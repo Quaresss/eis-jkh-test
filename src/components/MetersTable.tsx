@@ -39,7 +39,6 @@ export const MetersTable = observer(
 
         <BodyWrapper>
           {loading ? (
-            // Если идет загрузка новой страницы — показываем ТОЛЬКО сообщение о загрузке
             <StateMessage>Загрузка...</StateMessage>
           ) : (
             <>
