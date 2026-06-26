@@ -1,6 +1,8 @@
 import type { AreaApi, MeterApi, PaginatedResponse } from '../types/meter';
 
-const API_BASE = '/api';
+const API_BASE = import.meta.env.DEV 
+  ? '/api' 
+  : 'http://eis24.me';
 
 export const metersApi = {
   async fetchMeters(
