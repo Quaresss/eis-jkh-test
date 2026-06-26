@@ -25,8 +25,6 @@ export const MetersTable = observer(
     onDelete,
     loading,
   }: Props) => {
-    const [hoveredRow, setHoveredRow] = useState<string | null>(null);
-
     return (
       <TableCard>
         <HeaderRow>
@@ -52,11 +50,7 @@ export const MetersTable = observer(
                 const isDeleting = deletingIds.includes(meter.id);
 
                 return (
-                  <BodyRow
-                    key={meter.id}
-                    onMouseEnter={() => setHoveredRow(meter.id)}
-                    onMouseLeave={() => setHoveredRow(null)}
-                  >
+                  <BodyRow key={meter.id}>
                     <CellNo>{(page - 1) * PAGE_SIZE + index + 1}</CellNo>
                     <CellType>
                       <TypeIcon type={type.kind} />
