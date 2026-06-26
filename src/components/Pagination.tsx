@@ -33,7 +33,8 @@ const PageButton = styled.button<{ $active: boolean }>`
   min-width: 32px;
   height: 32px;
   border: 1px solid #ced5de;
-  border-radius: 8px;
+  border-radius: 6px;
   background: ${({ $active }) => ($active ? '#f2f5f8' : '#fff')};
   cursor: pointer;
+  color: #1f2939;
 `;

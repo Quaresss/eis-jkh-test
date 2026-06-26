@@ -15,7 +15,10 @@ export const MetersPage = observer(() => {
     void metersStore.fetchPage(1);
   }, []);
 
-  const paginationItems = buildPaginationItems(metersStore.page, metersStore.maxPage);
+  const paginationItems = buildPaginationItems(
+    metersStore.page,
+    metersStore.maxPage
+  );
 
   return (
     <PageSection>
@@ -46,11 +49,17 @@ const PageSection = styled.section`
 `;
 
 const PageTitle = styled.h1`
-  margin: 0 0 16px;
-  color: #1f2939;
-  font-size: 32px;
-  line-height: 1.2;
+  width: 206px;
+  height: 32px;
+  font-style: normal;
   font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+  font-feature-settings: 'liga' off;
+  color: #1f2939;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
 `;
 
 const ErrorText = styled.p`

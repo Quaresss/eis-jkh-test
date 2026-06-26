@@ -12,7 +12,7 @@ const MetersStore = types
     addressCache: types.map(types.string),
     loading: types.optional(types.boolean, false),
     error: types.maybeNull(types.string),
-    deletingIds: types.array(types.string)
+    deletingIds: types.array(types.string),
   })
   .views((self) => ({
     get maxPage() {
@@ -20,7 +20,7 @@ const MetersStore = types
     },
     addressByAreaId(areaId: string) {
       return self.addressCache.get(areaId) ?? '—';
-    }
+    },
   }))
   .actions((self) => {
     const setError = (error: string | null) => {
@@ -44,7 +44,9 @@ const MetersStore = types
     };
 
     const removeDeletingId = (id: string) => {
-      self.deletingIds.replace(self.deletingIds.filter((deletingId) => deletingId !== id));
+      self.deletingIds.replace(
+        self.deletingIds.filter((deletingId) => deletingId !== id)
+      );
     };
 
     const fetchMissingAddresses = flow(function* fetchMissingAddresses() {
@@ -58,9 +60,13 @@ const MetersStore = types
 
       if (uniqueAreaIds.length === 0) return;
 
-      const payload: Awaited<ReturnType<typeof metersApi.fetchAreas>> = yield metersApi.fetchAreas(uniqueAreaIds);
+      const payload: Awaited<ReturnType<typeof metersApi.fetchAreas>> =
+        yield metersApi.fetchAreas(uniqueAreaIds);
       payload.results.forEach((area) => {
-        self.addressCache.set(area.id, buildAddress(area.house?.address, area.str_number?.trim()));
+        self.addressCache.set(
+          area.id,
+          buildAddress(area.house?.address, area.str_number?.trim())
+        );
       });
     });
 
@@ -71,10 +77,8 @@ const MetersStore = types
 
         const safePage = Math.max(1, page);
         const offset = (safePage - 1) * PAGE_SIZE;
-        const payload: Awaited<ReturnType<typeof metersApi.fetchMeters>> = yield metersApi.fetchMeters(
-          PAGE_SIZE,
-          offset
-        );
+        const payload: Awaited<ReturnType<typeof metersApi.fetchMeters>> =
+          yield metersApi.fetchMeters(PAGE_SIZE, offset);
         setPageData(payload.results, payload.count, safePage);
         yield fetchMissingAddresses();
       } catch (error) {
@@ -91,17 +95,21 @@ const MetersStore = types
       try {
         yield metersApi.deleteMeter(meterId);
 
-        self.meters.replace(self.meters.filter((meter) => meter.id !== meterId));
+        self.meters.replace(
+          self.meters
+            .filter((meter) => meter.id !== meterId)
+            .map((meter) => ({ ...meter }))
+        );
         self.totalCount = Math.max(0, self.totalCount - 1);
 
         const pageOffset = (self.page - 1) * PAGE_SIZE;
-        const needOneMore = self.meters.length < PAGE_SIZE && pageOffset + self.meters.length < self.totalCount;
+        const needOneMore =
+          self.meters.length < PAGE_SIZE &&
+          pageOffset + self.meters.length < self.totalCount;
 
         if (needOneMore) {
-          const payload: Awaited<ReturnType<typeof metersApi.fetchMeters>> = yield metersApi.fetchMeters(
-            1,
-            pageOffset + self.meters.length
-          );
+          const payload: Awaited<ReturnType<typeof metersApi.fetchMeters>> =
+            yield metersApi.fetchMeters(1, pageOffset + self.meters.length);
           self.totalCount = payload.count;
           self.meters.replace([...self.meters, ...payload.results]);
           yield fetchMissingAddresses();
@@ -119,5 +127,5 @@ const MetersStore = types
 export const metersStore = MetersStore.create({
   meters: [],
   addressCache: {},
-  deletingIds: []
+  deletingIds: [],
 });

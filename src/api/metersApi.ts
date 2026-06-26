@@ -3,8 +3,13 @@ import type { AreaApi, MeterApi, PaginatedResponse } from '../types/meter';
 const API_BASE = '/api';
 
 export const metersApi = {
-  async fetchMeters(limit: number, offset: number): Promise<PaginatedResponse<MeterApi>> {
-    const response = await fetch(`${API_BASE}/meters/?limit=${limit}&offset=${offset}`);
+  async fetchMeters(
+    limit: number,
+    offset: number
+  ): Promise<PaginatedResponse<MeterApi>> {
+    const response = await fetch(
+      `${API_BASE}/meters/?limit=${limit}&offset=${offset}`
+    );
     if (!response.ok) {
       throw new Error('Не удалось загрузить счётчики');
     }
@@ -28,9 +33,11 @@ export const metersApi = {
   },
 
   async deleteMeter(meterId: string): Promise<void> {
-    const response = await fetch(`${API_BASE}/meters/${meterId}/`, { method: 'DELETE' });
+    const response = await fetch(`${API_BASE}/meters/${meterId}/`, {
+      method: 'DELETE',
+    });
     if (!response.ok) {
       throw new Error('Не удалось удалить счётчик');
     }
-  }
+  },
 };
