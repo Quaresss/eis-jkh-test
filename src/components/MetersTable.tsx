@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { PAGE_SIZE } from '../types/meter';
 import type { MeterApi } from '../types/meter';
 import { formatDate, mapMeterType } from '../utils/meterFormat';
-import { TypeIcon } from '../components/TypeIcon'; // Импортируем иконку типа
+import { TypeIcon } from '../components/TypeIcon';
 import { DeleteButton } from '../components/DeleteButton';
 
 type Props = {
